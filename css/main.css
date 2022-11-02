@@ -8,6 +8,7 @@
 	--userfont: roboto-st, sans-serif;
 	--systemfont: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 	--padding: 120px;
+	--transition: cubic-bezier(.4, 0, 0, 1);
 }
 
 /* BOOTSTRAP SETTINGS SECTION */
@@ -73,11 +74,7 @@ body, html{
 	background-repeat: no-repeat;
 	background-position: center -65px;
 	animation: k-light 3s ease-in-out infinite;
-
-
-
-
-
+	
 }
 .showcase__video{
 	position: absolute;
@@ -106,7 +103,7 @@ body, html{
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	animation: k-glow 1.8s ease-in-out infinite;
+	animation: k-glow 1.6s ease-in-out infinite;
 }
 .showcase__header{
 	position: absolute;
@@ -116,21 +113,51 @@ body, html{
 	top: 40px;
 	font-family: assassin-st, sans-serif;
 	font-size: 32px;
-	color: rgba(255, 255, 255, .75);;
+	color: rgba(255, 255, 255, .75);
 }
 .showcase__header span{
 	color: var(--accent);
+}
+
+.showcase-carousel .swiper-wrapper{
+	transition: var(--transition);
 }
 
 .showcase-carousel__item{
 	position: relative;
 	height: calc(100vh - var(--padding)*2);
 	text-align: center;
+	opacity: .25;
+	transform: scale(.75);
+	transition: opacity 1.8s var(--transition), transform 1.8s var(--transition);
+}
+.showcase-carousel__item::after{
+	content: '';
+	width: 120px;
+	height: 0;
+	position: absolute;
+	box-shadow: 0 0 45px 10px #010101 ;
+	bottom: 5px;
+	left: calc(50% - 60px);
+}
+.showcase-carousel__item p {
+	position: absolute;
+	bottom: -85px;
+	width: 100%;
+	font-family: assassin-st, sans-serif;
+	font-size: 32px;
+	color: rgba(255, 255, 255, .5);
+	text-shadow: rgb(58 78 94) 0 0 10px;
+
+}
+.showcase-carousel__item.swiper-slide-active{
+	opacity: .8;
+	transform: scale(.98);
 }
 .showcase-carousel__image-wrapper > * {
 	position: absolute;
 	width: 100%;
-	height: 10%;
+	height: 100%;
 	perspective: 150px;
 	transform-style: preserve-3d;
 }
@@ -138,8 +165,75 @@ body, html{
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
 }
+.showcase-carousel__image-left{
+	perspective-origin: left center;
+	clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+}
+.showcase-carousel__image-right{
+	perspective-origin: right center;
+	clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+}
+
+.showcase-carousel__image-left .showcase-carousel__image{
+	animation: k-left-side 2s ease-in-out infinite;
+	animation-direction: alternate;
+}
+.showcase-carousel__image-right .showcase-carousel__image{
+	animation: k-right-side 2s ease-in-out infinite;
+	animation-direction: alternate;
+}
+
+.showcase-navigation {
+	overflow: hidden;
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.showcase-navigation > *  {
+	position: absolute;
+	height: 100%;
+	width: 50%;
+	outline: none;
+	cursor: pointer;
+}
+.showcase-navigation__next{
+	right: 0;
+
+}
+
+.showcase-navigation > *::before{
+	content: '?';
+	font-family: assassin-st;
+	opacity: 0;
+	transition: opacity .75s ease-out;
+	position: absolute;
+	transform: rotate(-90deg);
+	left: 50px;
+	top: 50%;
+	font-size: 45px;
+}
+.showcase-navigation > *:hover::before{
+	opacity: .25;
+}
+.showcase-navigation__next::before{
+	transform: rotate(90deg);
+	right: 50px;
+	left: auto;
+}
+.showcase-navigation > *.swiper-button-disabled{
+	display: none;
+
+}
+
+
 
 @keyframes k-light{
 	0%{
@@ -161,5 +255,21 @@ body, html{
 	}
 	100%{
 		opacity: .6;
+	}
+}
+@keyframes k-left-side{
+	0%{
+		transform: rotateY(-1deg) scaleX(.92);
+	}
+	100%{
+		transform: rotateY(0deg) scaleX(1);
+	}
+}
+@keyframes k-right-side{
+	0%{
+		transform: rotateY(0deg) scaleX(1);
+	}
+	100%{
+		transform: rotateY(1deg) scaleX(.92);
 	}
 }
